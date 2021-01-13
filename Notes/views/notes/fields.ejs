@@ -1,0 +1,18 @@
+<div class="form-group my-2">
+	<label for="title">Title</label>
+	<input type="text" value="<%= note.title %>" required name="title" id="title" class="form-control">
+</div>
+<div class="form-group my-2">
+	<label for="description">Description</label>
+	<textarea name="description" id="description" class="form-control">
+		<%= note.description %>
+	</textarea>
+</div>
+<div class="form-group my-2">
+	<label for="content">Content</label>
+	<textarea required name="content" id="content" class="form-control"><%= note.content %></textarea>
+</div>
+<div class="text-center">
+	<button type="submit" class="btn btn-primary col-md-2">Save</button>
+	<a href="/" class="btn btn-danger mx-4 col-md-2">Cancel</a>
+</div>

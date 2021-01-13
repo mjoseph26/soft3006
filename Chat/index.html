@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<div class="container-fluid">
+    	<a class="navbar-brand">Notebook</a>
+    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    	</button>
+    	<div class="collapse navbar-collapse" id="navbarNav">
+      	<ul class="navbar-nav">
+        	<li class="nav-item">
+          	<a class="nav-link" href="http://localhost:9000/">Notes</a>
+        	</li>
+        	<li class="nav-item">
+          	<a class="nav-link active" href="http://localhost:3000/">Chat</a>
+        	</li>
+      	</ul>
+    	</div>
+    </div>
+	</nav>
+	<div class="container text-center">
+  	<h1 class="my-4">Chat</h1>
+  	<input id = "name" class="form-control my-2" placeholder="Name">
+  	<textarea id = "message" class="form-control my-2" placeholder="Enter Your Message Here"></textarea>
+  	<button id="send" class="btn btn-primary col-md-2">Send</button>
+	</div>
+  <div class="border mt-5 col-md-4 mx-auto" id="messages" style="height:450px; overflow:auto"></div>
+
+<script>
+   var socket = io();
+    $(() => {
+        $("#send").click(()=>{
+            sendMessage({name: $("#name").val(), message: $("#message").val()});
+        })
+
+        getMessages()
+    })
+
+    socket.on('message', addMessages)
+
+    function addMessages(message){
+        $("#messages").append(`<p><span style="font-weight:bold">${message.name}:</span> ${message.message} </p>`)
+    }
+
+    function getMessages(){
+      $.get('http://localhost:3000/messages', (data) => {
+        data.forEach(addMessages);
+      })
+    }
+
+    function sendMessage(message){
+      $.post('http://localhost:3000/messages', message)
+    }
+</script>
+</body>
+</html>
