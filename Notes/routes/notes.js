@@ -30,7 +30,7 @@ router.put('/:id', async function(req, res, next){
 router.delete('/:id',async function(req,res){
 	await Note.findByIdAndDelete(req.params.id)
 	res.redirect('/')
-})
+}) 
 
 function saveNoteAndRedirect(path){
 	return async function(req, res){
